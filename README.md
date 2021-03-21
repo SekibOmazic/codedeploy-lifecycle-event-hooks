@@ -21,14 +21,14 @@ Since we don't use a registered domain (e.g. api.cool-service.com) we need to ge
 npm install
 
 aws cloudformation package \
-  --template-file template.yaml \
+  --template-file cloudformation/infrastructure/cf-template.yaml \
   --output-template-file packaged-template.yaml \
   --s3-bucket <S3 bucket for storing the Lambda function code>
 
 aws cloudformation deploy \
   --region us-east-1 \
   --template-file packaged-template.yaml \
-  --stack-name BlueGreenBackendHooksTest \
+  --stack-name blue-green-backend-hooks \
   --tags project=blue-green-fargate \
   --parameter-overrides BackendDomain=<YOUR_DOMAIN_OR_DNS_OF_THE_ELB> \
   --capabilities CAPABILITY_NAMED_IAM

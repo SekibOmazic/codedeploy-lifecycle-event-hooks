@@ -23,7 +23,7 @@ Resources:
         - - 'CodeDeployHook_'
           - !Ref ServiceName
           - '_pre-traffic-hook'
-      CodeUri: ./
+      CodeUri: ../../
       Timeout: 300
       Handler: pre-traffic-hook.handler
       Policies:

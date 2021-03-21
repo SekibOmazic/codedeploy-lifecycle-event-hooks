@@ -52,7 +52,10 @@ Resources:
   CodeDeployHookRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub 'CodeDeployHookRole_${ServiceName}'
+      RoleName: !Join
+        - ''
+        - - 'CodeDeployHookRole_'
+          - !Ref ServiceName
       AssumeRolePolicyDocument:
         Statement:
         - Effect: Allow

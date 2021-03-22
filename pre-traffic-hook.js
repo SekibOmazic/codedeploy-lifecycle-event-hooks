@@ -45,8 +45,8 @@ exports.handler = async function (event, context, callback) {
         if (response.status != 200) {
             console.error("Failure status");
             params.status = 'Failed';
-        } else if (response.data.length != 4) {
-            console.error("Wrong number of categories");
+        } else if (response.data.length != 0) {
+            console.error("Wrong number of users");
             params.status = 'Failed';
         }
     } catch (err) {

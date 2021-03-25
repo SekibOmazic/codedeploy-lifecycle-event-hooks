@@ -2,34 +2,23 @@
 
 This repo contains the lambda hook that tests this [blue-green deployment](https://github.com/SekibOmazic/blue-green-fargate)
 
-## Deploy
+## Manual Deployment
 
-TODO
-
-```
-aws cloudformation create-stack --stack-name blue-green-lambda-hook \
-    --template-body file://cicd/pipeline.yaml \
-    --parameters ParameterKey=SomeParam,ParameterValue=<SOME_VALUE> \
-    --capabilities CAPABILITY_NAMED_IAM
-```
-
-## Manual Deploy
-
-Since we don't use a registered domain (e.g. api.cool-service.com) we need to get the DNS of the ELB from the [blue-green-fargate](https://github.com/SekibOmazic/blue-green-fargate)
+You need an S3 bucket which will store the lambda function code. Also make sure to obtain the domain name of your backend service. This would be something like `api.my-domain.com`.
 
 ```
 npm install
 
 aws cloudformation package \
-  --template-file cloudformation/infrastructure/cf-template.yaml \
+  --template-file template.yaml \
   --output-template-file packaged-template.yaml \
-  --s3-bucket <S3 bucket for storing the Lambda function code>
+  --s3-bucket blue-green-deployment-hook-artifacts
 
 aws cloudformation deploy \
   --region us-east-1 \
   --template-file packaged-template.yaml \
-  --stack-name blue-green-backend-hooks \
+  --stack-name blue-green-deployment-hook \
   --tags project=blue-green-fargate \
-  --parameter-overrides BackendDomain=<YOUR_DOMAIN_OR_DNS_OF_THE_ELB> \
+  --parameter-overrides BackendDomain=<YOUR_DOMAIN> \
   --capabilities CAPABILITY_NAMED_IAM
 ```

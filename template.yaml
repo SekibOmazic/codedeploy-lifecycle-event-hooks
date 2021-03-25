@@ -43,7 +43,7 @@ Resources:
         Variables:
           TargetUrl: !Join # Example: https://api.your-domain.com:9000/user
             - ''
-            - - 'http://'
+            - - 'https://'
               - !Ref BackendDomain
               - ':'
               - !Ref BackendPort

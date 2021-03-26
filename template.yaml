@@ -41,13 +41,13 @@ Resources:
         Role: ""
       Environment:
         Variables:
-          TargetUrl: !Join # Example: https://api.your-domain.com:9000/user
+          TargetUrl: !Join # Example: https://api.your-domain.com:9000/color
             - ''
             - - 'https://'
               - !Ref BackendDomain
               - ':'
               - !Ref BackendPort
-              - '/user'
+              - '/color'
 
   CodeDeployHookRole:
     Type: AWS::IAM::Role

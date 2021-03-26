@@ -10,6 +10,11 @@ function sleep(seconds) {
     return new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
 
+const BLUE = 'cornflowerblue';
+const GREEN = 'green';
+
+const acceptedColor = (color) => color == BLUE || color == GREEN;
+
 exports.handler = async function (event, context, callback) {
 
     console.log("Entering PreTraffic Hook!");
@@ -45,8 +50,8 @@ exports.handler = async function (event, context, callback) {
         if (response.status != 200) {
             console.error("Failure status");
             params.status = 'Failed';
-        } else if (response.data.length != 0) {
-            console.error("Wrong number of users");
+        } else if (!acceptedColor(response.data.color)) {
+            console.error("Wrong color from backend: ", response.data.color);
             params.status = 'Failed';
         }
     } catch (err) {

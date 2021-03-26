@@ -12,7 +12,7 @@ npm install
 aws cloudformation package \
   --template-file template.yaml \
   --output-template-file packaged-template.yaml \
-  --s3-bucket blue-green-deployment-hook-artifacts
+  --s3-bucket <YOUR_BUCKET_FOR_ARTIFACTS>
 
 aws cloudformation deploy \
   --region us-east-1 \

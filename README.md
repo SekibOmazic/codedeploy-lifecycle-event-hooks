@@ -1,6 +1,8 @@
 # Lambda Hook to test Blue-Green Deployment
 
-This repo contains the lambda hook that tests this [blue-green deployment](https://github.com/SekibOmazic/blue-green-fargate)
+This repo contains the lambda hook that tests this [blue-green deployment](https://github.com/SekibOmazic/blue-green-fargate).
+
+It is also used [here](https://github.com/SekibOmazic/deploy-on-fargate)
 
 ## Manual Deployment
 
@@ -9,16 +11,19 @@ You need an S3 bucket which will store the lambda function code. Also make sure 
 ```
 npm install
 
+LAMBDA_ARTIFACTS_BUCKET=<YOUR_BUCKET>
+DOMAIN_NAME=<YOUR_DOMAIN_NAME>
+
 aws cloudformation package \
   --template-file template.yaml \
   --output-template-file packaged-template.yaml \
-  --s3-bucket <YOUR_BUCKET_FOR_ARTIFACTS>
+  --s3-bucket ${LAMBDA_ARTIFACTS_BUCKET}
 
 aws cloudformation deploy \
   --region us-east-1 \
   --template-file packaged-template.yaml \
   --stack-name blue-green-deployment-hook \
   --tags project=blue-green-fargate \
-  --parameter-overrides BackendDomain=<YOUR_DOMAIN> \
+  --parameter-overrides BackendDomain=${DOMAIN_NAME} \
   --capabilities CAPABILITY_NAMED_IAM
 ```

@@ -1,16 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Validation hooks for blue-green-fargate service
+Description: Validation hooks for the service deployed on ECS Fargate 
 
 Parameters:
-  ServiceName:
-    Type: String
-    Default: blue-green-fargate
-
-  BackendDomain:
+  ApiName:
     Type: String
 
-  BackendPort:
+  DomainName:
+    Type: String
+
+  Port:
     Type: Number
     Default: 9000
 
@@ -21,8 +20,8 @@ Resources:
       FunctionName: !Join
         - '-'
         - - 'CodeDeployHook_'
-          - !Ref ServiceName
-          - '_pre-traffic-hook'
+          - !Ref ApiName
+          - '_pre-traffic'
       CodeUri: ./
       Timeout: 300
       Handler: pre-traffic-hook.handler
@@ -44,18 +43,14 @@ Resources:
           TargetUrl: !Join # Example: https://api.your-domain.com:9000/color
             - ''
             - - 'https://'
-              - !Ref BackendDomain
+              - !Ref DomainName
               - ':'
-              - !Ref BackendPort
+              - !Ref Port
               - '/color'
 
   CodeDeployHookRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Join
-        - ''
-        - - 'CodeDeployHookRole_'
-          - !Ref ServiceName
       AssumeRolePolicyDocument:
         Statement:
         - Effect: Allow

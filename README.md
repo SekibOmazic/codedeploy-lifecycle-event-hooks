@@ -4,26 +4,27 @@ This repo contains the lambda hook that tests this [blue-green deployment](https
 
 It is also used [here](https://github.com/SekibOmazic/deploy-on-fargate)
 
-## Manual Deployment
+## Pre-requisites
 
-You need an S3 bucket which will store the lambda function code. Also make sure to obtain the domain name of your backend service. This would be something like `api.my-domain.com`.
+You need an S3 bucket which will store the lambda function code.
+This lambda assumes you have a service running on
 
 ```
-npm install
-
-LAMBDA_ARTIFACTS_BUCKET=<YOUR_BUCKET>
-DOMAIN_NAME=<YOUR_DOMAIN_NAME>
-
-aws cloudformation package \
-  --template-file template.yaml \
-  --output-template-file packaged-template.yaml \
-  --s3-bucket ${LAMBDA_ARTIFACTS_BUCKET}
-
-aws cloudformation deploy \
-  --region us-east-1 \
-  --template-file packaged-template.yaml \
-  --stack-name blue-green-deployment-hook \
-  --tags project=blue-green-fargate \
-  --parameter-overrides BackendDomain=${DOMAIN_NAME} \
-  --capabilities CAPABILITY_NAMED_IAM
+https://<API_NAME>.<HOSTED_ZONE_NAME>
 ```
+
+For example: https://api.my-domain.com
+
+## Deploy
+
+1. Update variables in [deploy.sh](deploy.sh)
+
+2. From your terminal run:
+
+```
+./deploy.sh
+```
+
+## Cleanup
+
+In AWS Console go to CloudFormation and manually delete stack "blue-green-deployment-hook"
